@@ -669,55 +669,49 @@ class ControlFrame(CNCRibbon.PageLabelFrame):
 	#----------------------------------------------------------------------
 	# Jogging
 	#----------------------------------------------------------------------
+        def _jogStep(self):
+                return float(self.step.get())
+        
 	def moveXup(self, event=None):
-		if event is not None and not self.acceptKey(): return
-		self.sendGCode("$J=G91G21X%sF10000"%(self.step.get()))
-#		self.sendGCode("G90")
+                if event is not None and not self.acceptKey(): return
+                self.jogger.jogDelta([self._jogStep(), 0, 0])
 
 	def moveXdown(self, event=None):
 		if event is not None and not self.acceptKey(): return
-		self.sendGCode("G91G0X-%s"%(self.step.get()))
-		self.sendGCode("G90")
+                self.jogger.jogDelta([-self._jogStep(), 0, 0])
 
 	def moveYup(self, event=None):
 		if event is not None and not self.acceptKey(): return
-		self.sendGCode("G91G0Y%s"%(self.step.get()))
-		self.sendGCode("G90")
+                self.jogger.jogDelta([0, self._jogStep(), 0])
+
 
 	def moveYdown(self, event=None):
 		if event is not None and not self.acceptKey(): return
-		self.sendGCode("G91G0Y-%s"%(self.step.get()))
-		self.sendGCode("G90")
+                self.jogger.jogDelta([0, -self._jogStep(), 0])
 
 	def moveXdownYup(self, event=None):
 		if event is not None and not self.acceptKey(): return
-		self.sendGCode("G91G0X-%sY%s"%(self.step.get(),self.step.get()))
-		self.sendGCode("G90")
+                self.jogger.jogDelta([-self._jogStep(), self._jogStep(), 0])
 
 	def moveXupYup(self, event=None):
 		if event is not None and not self.acceptKey(): return
-		self.sendGCode("G91G0X%sY%s"%(self.step.get(),self.step.get()))
-		self.sendGCode("G90")
+                self.jogger.jogDelta([self._jogStep(), self._jogStep(), 0])
 
 	def moveXdownYdown(self, event=None):
 		if event is not None and not self.acceptKey(): return
-		self.sendGCode("G91G0X-%sY-%s"%(self.step.get(),self.step.get()))
-		self.sendGCode("G90")
+                self.jogger.jogDelta([-self._jogStep(), -self._jogStep(), 0])
 
 	def moveXupYdown(self, event=None):
 		if event is not None and not self.acceptKey(): return
-		self.sendGCode("G91G0X%sY-%s"%(self.step.get(),self.step.get()))
-		self.sendGCode("G90")
+                self.jogger.jogDelta([self._jogStep(), -self._jogStep(), 0])
 
 	def moveZup(self, event=None):
 		if event is not None and not self.acceptKey(): return
-		self.sendGCode("G91G0Z%s"%(self.zstep.get()))
-		self.sendGCode("G90")
+                self.jogger.jogDelta([0, 0, self._jogStep()])
 
 	def moveZdown(self, event=None):
 		if event is not None and not self.acceptKey(): return
-		self.sendGCode("G91G0Z-%s"%(self.zstep.get()))
-		self.sendGCode("G90")
+                self.jogger.jogDelta([0, 0, -self._jogStep()])
 
 	def go2origin(self, event=None):
 		self.sendGCode("G90G0X0Y0Z0")

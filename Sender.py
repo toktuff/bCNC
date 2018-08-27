@@ -58,6 +58,8 @@ OV_SPINDLE_STOP = chr(0x9E)
 OV_FLOOD_TOGGLE = chr(0xA0)
 OV_MIST_TOGGLE  = chr(0xA1)
 
+JOG_CANCEL      = chr(0x85)
+
 GPAT	  = re.compile(r"[A-Za-z]\d+.*")
 STATUSPAT = re.compile(r"^<(\w*?),MPos:([+\-]?\d*\.\d*),([+\-]?\d*\.\d*),([+\-]?\d*\.\d*),WPos:([+\-]?\d*\.\d*),([+\-]?\d*\.\d*),([+\-]?\d*\.\d*),?(.*)>$")
 POSPAT	  = re.compile(r"^\[(...):([+\-]?\d*\.\d*),([+\-]?\d*\.\d*),([+\-]?\d*\.\d*):?(\d*)\]$")
@@ -744,6 +746,9 @@ class Sender:
 			self.resume()
 		else:
 			self.feedHold()
+
+        def jogCancel(self):
+                self.serial.write(JOG_CANCEL)
 
 	#----------------------------------------------------------------------
 	# FIXME ????

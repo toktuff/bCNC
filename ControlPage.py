@@ -23,6 +23,7 @@ import Sender
 import tkExtra
 import Unicode
 import CNCRibbon
+import Jogger
 from Sender import ERROR_CODES
 from CNC import WCS, DISTANCE_MODE, FEED_MODE, UNITS, PLANE
 
@@ -457,6 +458,7 @@ class ControlFrame(CNCRibbon.PageLabelFrame):
 		CNCRibbon.PageLabelFrame.__init__(self, master, "Control", _("Control"), app)
 
 		row,col = 0,0
+                self.jogger = Jogger.Jogger(app)
 		Label(self, text=_("Z")).grid(row=row, column=col)
 
 		col += 3
@@ -669,8 +671,8 @@ class ControlFrame(CNCRibbon.PageLabelFrame):
 	#----------------------------------------------------------------------
 	def moveXup(self, event=None):
 		if event is not None and not self.acceptKey(): return
-		self.sendGCode("G91G0X%s"%(self.step.get()))
-		self.sendGCode("G90")
+		self.sendGCode("$J=G91G21X%sF10000"%(self.step.get()))
+#		self.sendGCode("G90")
 
 	def moveXdown(self, event=None):
 		if event is not None and not self.acceptKey(): return

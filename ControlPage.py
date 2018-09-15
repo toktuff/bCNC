@@ -459,6 +459,7 @@ class ControlFrame(CNCRibbon.PageLabelFrame):
 
 		row,col = 0,0
                 self.jogger = Jogger.Jogger(app)
+#                self.jogger.enableGamepadJogging()
 		Label(self, text=_("Z")).grid(row=row, column=col)
 
 		col += 3

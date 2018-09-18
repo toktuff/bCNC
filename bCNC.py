@@ -64,6 +64,7 @@ from ControlPage  import ControlPage
 from TerminalPage import TerminalPage
 from ProbePage    import ProbePage
 from EditorPage   import EditorPage
+from Jogger       import Jogger
 
 _openserial = True	# override ini parameters
 _device     = None
@@ -467,6 +468,9 @@ class Application(Toplevel,Sender):
 			filename = Utils.getRecent(i)
 			if filename is None: break
 			bFileDialog.append2History(os.path.dirname(filename))
+
+                self.jogger = Jogger(self)
+                self.jogger.enableGamepadJogging()
 
 	#-----------------------------------------------------------------------
 	def setStatus(self, msg, force_update=False):
@@ -2130,6 +2134,8 @@ class Application(Toplevel,Sender):
 
 	#-----------------------------------------------------------------------
 	def close(self):
+                if self.jogger:
+                        self.jogger.disableGamepadJogging()
 		Sender.close(self)
 		try:
 			self.dro.updateState()

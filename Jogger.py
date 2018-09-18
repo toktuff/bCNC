@@ -123,6 +123,7 @@ class Jogger:
         self.default_feedrate = 10000
         self._gamePad_thread = None
         self._gamePad = None
+        self._moving = False
 
     def sendGCode(self, cmd):
         self.app.sendGCode(cmd)
@@ -147,9 +148,20 @@ class Jogger:
     def _gamePadPoll(self):
         if not self._gamePad:
             return
+
         if self._gamePad.x != 0 or self._gamePad.y != 0:
+            l = 10
+            delta = (l*self._gamePad.x, -l*self._gamePad.y, 0) #self._gamePad.z)
+            self.jogDelta(delta)
+            self._moving = 1
             print str(self._gamePad)
+        else:
+            if self._moving:
+                self.jogCancel()
+                self._moving = False
+                          
         self.app.after(self.update_interval, self._gamePadPoll)
+        self.app.protocol("WM_DELETE_WINDOW", self.disableGamepadJogging)
         
     def enableGamepadJogging(self):
         if not self._gamePad:
@@ -174,12 +186,6 @@ class Jogger:
         self._gamePad_thread = None
         self._gamePad = None
 
-
-def gamepad_updater(gp):
-    while True:
-        gp.processEvents()
-    
-        
 if __name__ == "__main__":
     gp = Gamepad()
     t = GamepadThread(gp)

@@ -748,7 +748,9 @@ class Sender:
 			self.feedHold()
 
         def jogCancel(self):
+                if self.serial is None: return
                 self.serial.write(JOG_CANCEL)
+                self.serial.flush()
 
 	#----------------------------------------------------------------------
 	# FIXME ????

@@ -23,7 +23,6 @@ import Sender
 import tkExtra
 import Unicode
 import CNCRibbon
-import Jogger
 from Sender import ERROR_CODES
 from CNC import WCS, DISTANCE_MODE, FEED_MODE, UNITS, PLANE
 
@@ -458,8 +457,6 @@ class ControlFrame(CNCRibbon.PageLabelFrame):
 		CNCRibbon.PageLabelFrame.__init__(self, master, "Control", _("Control"), app)
 
 		row,col = 0,0
-                self.jogger = Jogger.Jogger(app)
-#                self.jogger.enableGamepadJogging()
 		Label(self, text=_("Z")).grid(row=row, column=col)
 
 		col += 3
